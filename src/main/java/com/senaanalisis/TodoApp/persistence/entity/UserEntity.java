@@ -16,7 +16,7 @@ public class UserEntity {
 
     @Id
     private Integer id;
-    
+
     @Column(nullable=false)
     private String name;
 
