@@ -18,7 +18,7 @@ public class TaskEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "id_task")
-    private Integer id;
+    private Integer taskId;
 
     @Column(nullable = false)
     private String title;
@@ -35,6 +35,7 @@ public class TaskEntity {
     @Column(columnDefinition = "TINYINT", nullable = false)
     private Boolean state;
 
-    @OneToMany(mappedBy = "")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 }
