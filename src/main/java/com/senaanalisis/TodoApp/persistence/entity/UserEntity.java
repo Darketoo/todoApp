@@ -25,7 +25,7 @@ public class UserEntity {
     private String email;
 
     @Column(nullable = false)
-    private Integer password;
+    private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TaskEntity> tasks;
