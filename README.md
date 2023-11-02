@@ -41,9 +41,10 @@ All endpoints are documented using Swagger UI. You can view the documentation at
  * Mysql - Database Engine
  * Spring Framework - Framework used
  * Spring Data JPA - Dependency on data manipulation
+ * Spring Security - Security Management Unit
 
 ## Authors ✒️
- * Haider Montes
  * Leiber Bertel
+ * Haider Montes
  * Tatiana Del Rio Carmona
  * Andrés Zapata
