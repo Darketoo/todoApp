@@ -26,7 +26,7 @@ public class TaskEntity {
     private String description;
 
     @Column(columnDefinition = "DATETIME")
-    private LocalDateTime date;
+    private LocalDateTime startTime;
 
     @Column(columnDefinition = "DATETIME")
     private LocalDateTime duration;
