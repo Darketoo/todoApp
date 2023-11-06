@@ -1,5 +1,6 @@
 package com.senaanalisis.TodoApp.web.controller;
 
+import com.senaanalisis.TodoApp.auth.dto.RegisterRequest;
 import com.senaanalisis.TodoApp.exception.UserNotFoundException;
 import com.senaanalisis.TodoApp.persistence.entity.UserEntity;
 import com.senaanalisis.TodoApp.service.UserService;
@@ -29,17 +30,11 @@ public class UserController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user) {
-        UserEntity newUser = userService.create(user);
-        return ResponseEntity.ok(newUser);
-    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserEntity> updateUser(@PathVariable int id, @RequestBody UserEntity user) {
+    public ResponseEntity<UserEntity> updateUser(@PathVariable int id, @RequestBody RegisterRequest user) {
         try {
-            user.setId(id);
-            UserEntity updatedUser = userService.update(user);
+            UserEntity updatedUser = userService.update(id, user);
             return ResponseEntity.ok(updatedUser);
         } catch (UserNotFoundException e) {
             return ResponseEntity.notFound().build();
