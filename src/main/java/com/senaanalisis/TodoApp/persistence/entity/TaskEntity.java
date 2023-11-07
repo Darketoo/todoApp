@@ -1,10 +1,12 @@
 package com.senaanalisis.TodoApp.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,11 +31,12 @@ public class TaskEntity {
     private LocalDateTime startTime;
 
     @Column(columnDefinition = "DATETIME")
-    private LocalDateTime duration;
+    private Long duration;
 
     @Column(columnDefinition = "TINYINT", nullable = false)
     private Boolean state;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
