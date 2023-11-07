@@ -1,7 +1,9 @@
 package com.senaanalisis.TodoApp.web.controller;
 
+import com.senaanalisis.TodoApp.auth.dto.AuthResponse;
 import com.senaanalisis.TodoApp.auth.dto.RegisterRequest;
 import com.senaanalisis.TodoApp.exception.UserNotFoundException;
+import com.senaanalisis.TodoApp.persistence.entity.Dto.UserDto;
 import com.senaanalisis.TodoApp.persistence.entity.UserEntity;
 import com.senaanalisis.TodoApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,24 +23,18 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserEntity> getUserById(@PathVariable int id) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable int id) {
         try {
-            UserEntity user = userService.getUser(id);
+            UserDto user = userService.getUser(id);
             return ResponseEntity.ok(user);
         } catch (UserNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-
     @PutMapping("/{id}")
-    public ResponseEntity<UserEntity> updateUser(@PathVariable int id, @RequestBody RegisterRequest user) {
-        try {
-            UserEntity updatedUser = userService.update(id, user);
-            return ResponseEntity.ok(updatedUser);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<AuthResponse> updateUser(@PathVariable int id, @RequestBody RegisterRequest user) {
+        return ResponseEntity.ok(userService.update(id, user));
     }
 
     @DeleteMapping("/{id}")

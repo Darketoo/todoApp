@@ -1,9 +1,10 @@
 package com.senaanalisis.TodoApp.web.controller;
 
+import com.senaanalisis.TodoApp.persistence.entity.Dto.TaskRequest;
+import com.senaanalisis.TodoApp.persistence.entity.Dto.TaskUpdate;
 import com.senaanalisis.TodoApp.persistence.entity.TaskEntity;
 import com.senaanalisis.TodoApp.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,21 +29,28 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TaskEntity> getTask(@PathVariable int id) {
-        return new ResponseEntity<>(taskService.getTask(id), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(taskService.getTask(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
-    public ResponseEntity<TaskEntity> add(@RequestBody TaskEntity TaskEntity) {
-        TaskEntity TaskEntityAdded = this.taskService.create(TaskEntity);
-        return ResponseEntity.ok(TaskEntityAdded);
+    public ResponseEntity<?> createTask(@RequestBody TaskRequest taskRequest) {
+        try {
+            taskService.createTask(taskRequest);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al procesar la solicitud: " + e.getMessage());
+        }
     }
 
-    @PutMapping
-    public ResponseEntity<TaskEntity> update(@RequestBody TaskEntity TaskEntity) {
-        TaskEntity TaskEntityUpdate = this.taskService.update(TaskEntity);
-        return ResponseEntity.ok(TaskEntityUpdate);
+    @PutMapping("/{taskId}")
+    public ResponseEntity<TaskEntity> update(@PathVariable Integer taskId, @RequestBody TaskUpdate taskUpdate) {
+        TaskEntity taskUpdated = taskService.update(taskId, taskUpdate);
+        return ResponseEntity.ok(taskUpdated);
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
