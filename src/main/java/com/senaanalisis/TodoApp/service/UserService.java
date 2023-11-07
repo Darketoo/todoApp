@@ -1,13 +1,14 @@
 package com.senaanalisis.TodoApp.service;
 
+import com.senaanalisis.TodoApp.auth.dto.AuthResponse;
 import com.senaanalisis.TodoApp.auth.dto.RegisterRequest;
-import com.senaanalisis.TodoApp.exception.UserAlreadyExistsException;
+import com.senaanalisis.TodoApp.auth.jwt.JwtService;
 import com.senaanalisis.TodoApp.exception.UserNotFoundException;
+import com.senaanalisis.TodoApp.persistence.entity.Dto.UserDto;
 import com.senaanalisis.TodoApp.persistence.entity.UserEntity;
 import com.senaanalisis.TodoApp.persistence.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,24 +19,36 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserEntity getUser(int id) {
-        return this.userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+    public UserDto getUser(int id) throws UserNotFoundException {
+        UserEntity userEntity = userRepository.findById(id).orElseThrow();
+        UserDto UserDto = new UserDto();
+        UserDto.setUsername(userEntity.getUsername());
+        UserDto.setEmail(userEntity.getEmail());
+        UserDto.setName(userEntity.getName());
+        UserDto.setPassword(userEntity.getPassword());
+        return UserDto;
     }
 
     @Transactional
-    public UserEntity update(int id, RegisterRequest user) {
-        UserEntity userExisting = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+    public AuthResponse update(int id, RegisterRequest request) {
+        UserEntity existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        userExisting.setUsername(user.getUsername());
-        userExisting.setPassword(user.getPassword());
-        userExisting.setName(user.getName());
-        userExisting.setEmail(user.getEmail());
+        existingUser.setUsername(request.getUsername());
+        existingUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        existingUser.setName(request.getName());
+        existingUser.setEmail(request.getEmail());
 
-        return this.userRepository.save(userExisting);
+        userRepository.save(existingUser);
+
+        return AuthResponse.builder()
+                .token(jwtService.getToken(existingUser))
+                .build();
     }
+
 
     @Transactional
     public void delete(int id) {
