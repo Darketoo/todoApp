@@ -13,10 +13,11 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("API To-do")
+                        .title("API Pizzeria")
                         .version("1.0")
                         .description("API para el funcionamiento básico de una aplicación To-do con Spring Security")
                         .contact(new Contact()
-                                .name("Sena-Análisis")));
+                                .name("Repositorio API")
+                                .url("https://github.com/Darketoo/todoApp")));
     }
 }
