@@ -1,6 +1,7 @@
 package com.senaanalisis.TodoApp.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,21 +22,27 @@ public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Unique ID of the user", example = "20")
     private Integer id;
 
     @Column(nullable = true)
+    @Schema(description = "Name of the user", example = "Agustin")
     private String name;
 
     @Column(nullable = true)
+    @Schema(description = "Username of user", example = "darketo")
     private String username;
 
     @Column(nullable = true)
+    @Schema(description = "Email of user", example = "agustin@gmail.com")
     private String email;
 
     @Column(nullable = true)
+    @Schema(description = "Password of user", example = "12345")
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Schema(description = "Role of the user", example = "USER")
     Role role;
 
     @JsonIgnore
