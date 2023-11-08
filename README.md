@@ -28,12 +28,7 @@ java -jar target/nombre-de-tu-aplicacion.jar
 
 The Spring Boot application will launch and be running on port 8080
 
-## Endpoints 📖  
-
-The API has the following endpoints:
-
-
-All endpoints are documented using Swagger UI. You can view the documentation at http://localhost:8080/swagger-ui/index.html#/, which is the default endpoint for the Swagger UI.
+All endpoints and schemas are documented using Swagger UI. You can view the documentation at http://localhost:8080/swagger-ui/index.html#/, which is the default endpoint for the Swagger UI.
 
 ## Built with 🛠
  * Java version 17 - Language used
