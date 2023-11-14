@@ -1,6 +1,7 @@
 package com.senaanalisis.TodoApp.persistence.entity.Dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,8 +24,9 @@ public class TaskRequest {
     @Schema(description = "time to start the task", example = "2023/11/09")
     private LocalDateTime startTime;
 
-    @Schema(description = "Task duration", example = "120")
-    private Duration duration;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    @Schema(description = "Time to alert for the task", example = "2023-11-07T16:30:00")
+    private LocalDateTime alertTime;
 
     @Schema(description = "Task state", example = "true/false")
     private Boolean state;

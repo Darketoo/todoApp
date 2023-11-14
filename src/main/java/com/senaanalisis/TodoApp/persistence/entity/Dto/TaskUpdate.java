@@ -1,7 +1,10 @@
 package com.senaanalisis.TodoApp.persistence.entity.Dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public class TaskUpdate {
@@ -14,7 +17,8 @@ public class TaskUpdate {
     @Schema(description = "Task state", example = "true/false")
     private Boolean state;
 
-    @Schema(description = "Task duration", example = "120")
-    private Long duration;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    @Schema(description = "Time to alert for the task", example = "2023-11-07T16:30:00")
+    private LocalDateTime alertTime;
 }
 

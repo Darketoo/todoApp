@@ -32,13 +32,13 @@ public class TaskEntity {
     @Schema(description = "task description", example = "this task is important")
     private String description;
 
-    @Column(columnDefinition = "DATETIME")
-    @Schema(description = "Time to start task", example = "2023/11/07")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    @Schema(description = "Time to start task", example = "2023-11-07T14:30:00")
     private LocalDateTime startTime;
 
-    @Column(columnDefinition = "DATETIME")
-    @Schema(description = "Task Duration", example = "150")
-    private Long duration;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    @Schema(description = "Time to alert for the task", example = "2023-11-07T16:30:00")
+    private LocalDateTime alertTime;
 
     @Column(columnDefinition = "TINYINT", nullable = false)
     @Schema(description = "Task status", example = "false/true")

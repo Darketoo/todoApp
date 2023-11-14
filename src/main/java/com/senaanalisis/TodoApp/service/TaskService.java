@@ -33,25 +33,20 @@ public class TaskService {
                 .orElseThrow(() -> new RuntimeException("Task not found"));
     }
 
+    public void createTask(TaskRequest request) throws Exception {
+        UserEntity userEntity = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new Exception("User not found"));
 
-     public void createTask(TaskRequest request) throws Exception {
+        TaskEntity taskEntity = new TaskEntity();
+        taskEntity.setTitle(request.getTitle());
+        taskEntity.setDescription(request.getDescription());
+        taskEntity.setStartTime(request.getStartTime());
+        taskEntity.setAlertTime(request.getAlertTime());
+        taskEntity.setState(request.getState());
+        taskEntity.setUser(userEntity);
 
-      UserEntity userEntity = userRepository.findById(request.getUserId())
-              .orElseThrow(() -> new Exception("Usuario no encontrado"));
-
-      TaskEntity taskEntity = new TaskEntity();
-      taskEntity.setTitle(request.getTitle());
-      taskEntity.setDescription(request.getDescription());
-      taskEntity.setStartTime(request.getStartTime());
-
-      taskEntity.setDuration(request.getDuration().toMinutes());
-
-      taskEntity.setState(request.getState());
-      taskEntity.setUser(userEntity);
-
-      taskRepository.save(taskEntity);
-  }
-
+        taskRepository.save(taskEntity);
+    }
 
     @Transactional
     public TaskEntity update(Integer taskId, TaskUpdate updateDTO) {
@@ -67,8 +62,8 @@ public class TaskService {
         if (updateDTO.getState() != null) {
             task.setState(updateDTO.getState());
         }
-        if (updateDTO.getDuration() != null) {
-            task.setDuration(updateDTO.getDuration());
+        if (updateDTO.getAlertTime() != null) {
+            task.setAlertTime(updateDTO.getAlertTime());
         }
 
         return taskRepository.save(task);
