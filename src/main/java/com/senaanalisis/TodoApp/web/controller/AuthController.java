@@ -3,12 +3,15 @@ package com.senaanalisis.TodoApp.web.controller;
 import com.senaanalisis.TodoApp.auth.dto.AuthResponse;
 import com.senaanalisis.TodoApp.auth.dto.LoginRequest;
 import com.senaanalisis.TodoApp.auth.dto.RegisterRequest;
+import com.senaanalisis.TodoApp.persistence.entity.TaskEntity;
 import com.senaanalisis.TodoApp.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +40,8 @@ public class AuthController {
             @ApiResponse(responseCode = "403", description = "Deny access")
     })
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authService.register(request));
+    public ResponseEntity register(@RequestBody RegisterRequest request) {
+        authService.register(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
