@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -30,8 +33,12 @@ public class AuthController {
             @ApiResponse(responseCode = "403", description = "Deny access")
     })
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest request) {
+        AuthResponse response = authService.login(request);
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("message", "Inicio de sesión exitoso");
+        responseBody.put("data", response);
+        return ResponseEntity.ok(responseBody);
     }
 
     @Operation(summary = "Register a user a Application")
@@ -40,8 +47,10 @@ public class AuthController {
             @ApiResponse(responseCode = "403", description = "Deny access")
     })
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<Map<String, String>>register(@RequestBody RegisterRequest request) {
         authService.register(request);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Usuario registrado con éxito");
+        return ResponseEntity.ok(response);
     }
 }

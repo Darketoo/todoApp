@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -45,16 +47,17 @@ public class UserController {
             @ApiResponse(responseCode = "304", description = "user not update")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<AuthResponse> updateUser(@PathVariable int id, @RequestBody RegisterRequest user) {
-        return ResponseEntity.ok(userService.update(id, user));
+    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody RegisterRequest user) {
+        AuthResponse updateUser = userService.update(id, user);
+        return ResponseEntity.ok(Map.of("message", "Usuario actualizado con éxito", "user", updateUser));
     }
     @Operation(summary = "Delete user")
             @ApiResponse(responseCode = "200", description = "ok")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
+    public ResponseEntity<?> deleteUser(@PathVariable int id) {
         try {
             userService.delete(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(Map.of("message", "Usuario eliminado con éxito"));
         } catch (UserNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
