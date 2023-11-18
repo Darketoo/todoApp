@@ -41,16 +41,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-    @Operation(summary = "update user")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "304", description = "user not update")
-    })
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody RegisterRequest user) {
-        AuthResponse updateUser = userService.update(id, user);
-        return ResponseEntity.ok(Map.of("message", "Usuario actualizado con éxito", "user", updateUser));
-    }
+
     @Operation(summary = "Delete user")
             @ApiResponse(responseCode = "200", description = "ok")
     @DeleteMapping("/{id}")
