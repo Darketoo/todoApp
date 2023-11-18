@@ -33,24 +33,6 @@ public class UserService {
     }
 
     @Transactional
-    public AuthResponse update(int id, RegisterRequest request) {
-        UserEntity existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        existingUser.setUsername(request.getUsername());
-        existingUser.setPassword(passwordEncoder.encode(request.getPassword()));
-        existingUser.setName(request.getName());
-        existingUser.setEmail(request.getEmail());
-
-        userRepository.save(existingUser);
-
-        return AuthResponse.builder()
-                .token(jwtService.getToken(existingUser))
-                .build();
-    }
-
-
-    @Transactional
     public void delete(int id) {
         if (!this.userRepository.existsById(id)) {
             throw new UserNotFoundException("User with id " + id + " not found");

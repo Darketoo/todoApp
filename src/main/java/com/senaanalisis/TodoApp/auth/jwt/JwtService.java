@@ -18,17 +18,20 @@ import java.util.function.Function;
 public class JwtService {
 
     private static final String SECRET_KEY = "21318737813674623145678251741231671257184382152517412472158";
-    public String getToken(UserDetails user) {
-        return getToken(new HashMap<>(), user);
+    public String getToken(UserDetails user, String userId) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("userId", userId);
+
+        return createToken(extraClaims, user);
     }
 
-    private String getToken(Map<String, Object> extraClaims, UserDetails user) {
+    private String createToken(Map<String, Object> extraClaims, UserDetails user) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
