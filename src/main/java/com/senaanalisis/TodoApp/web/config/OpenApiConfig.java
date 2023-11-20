@@ -13,7 +13,7 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("API Pizzeria")
+                        .title("API TO-do app")
                         .version("1.0")
                         .description("API para el funcionamiento básico de una aplicación To-do con Spring Security")
                         .contact(new Contact()
