@@ -24,7 +24,7 @@ public class TaskRequest {
     @Schema(description = "time to start the task", example = "2023/11/09")
     private LocalDateTime startTime;
 
-    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "TIMESTAMP")
     @Schema(description = "Time to alert for the task", example = "2023-11-07T16:30:00")
     private LocalDateTime alertTime;
 

@@ -21,20 +21,25 @@ public class JwtService {
     public String getToken(UserDetails user, String userId) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("userId", userId);
-
         return createToken(extraClaims, user);
     }
 
-    private String createToken(Map<String, Object> extraClaims, UserDetails user) {
-        return Jwts
-                .builder()
-                .setClaims(extraClaims)
-                .setSubject(user.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
-                .signWith(getKey(), SignatureAlgorithm.HS256)
-                .compact();
+    public Integer getUserIdFromToken(String token) {
+        String userIdString = getClaim(token, claims -> claims.get("userId", String.class));
+        return Integer.parseInt(userIdString);
     }
+
+
+    private String createToken(Map<String, Object> extraClaims, UserDetails user) {
+            return Jwts
+                    .builder()
+                    .setClaims(extraClaims)
+                    .setSubject(user.getUsername())
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
+                    .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                    .signWith(getKey(), SignatureAlgorithm.HS256)
+                    .compact();
+        }
 
     private Key getKey() {
         byte[] keybytes = Decoders.BASE64.decode(SECRET_KEY);

@@ -1,9 +1,11 @@
 package com.senaanalisis.TodoApp.web.controller;
 
+import com.senaanalisis.TodoApp.auth.jwt.JwtService;
 import com.senaanalisis.TodoApp.persistence.entity.Dto.TaskRequest;
 import com.senaanalisis.TodoApp.persistence.entity.Dto.TaskUpdate;
 import com.senaanalisis.TodoApp.persistence.entity.TaskEntity;
 import com.senaanalisis.TodoApp.service.TaskService;
+import io.jsonwebtoken.Jwt;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -21,10 +23,12 @@ import java.util.Map;
 public class TaskController {
 
     private final TaskService taskService;
+    private final JwtService jwtService;
 
     @Autowired
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, JwtService jwtService) {
         this.taskService = taskService;
+        this.jwtService = jwtService;
     }
 
     @Operation(summary = "Get all task")
@@ -56,9 +60,11 @@ public class TaskController {
     @Operation(summary = "Create task")
     @ApiResponse(responseCode = "200", description = "ok")
     @PostMapping
-    public ResponseEntity<?> createTask(@RequestBody TaskRequest taskRequest) {
+    public ResponseEntity<?> createTask(@RequestBody TaskRequest taskRequest,
+                                        @RequestHeader("Authorization") String token) {
         try {
-            taskService.createTask(taskRequest);
+            Integer userId = jwtService.getUserIdFromToken(token.replace("Bearer ", ""));
+            taskService.createTask(taskRequest, userId);
             return ResponseEntity.ok(Map.of("message", "Tarea creada con éxito"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al procesar la solicitud: " + e.getMessage());

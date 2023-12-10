@@ -33,8 +33,8 @@ public class TaskService {
                 .orElseThrow(() -> new RuntimeException("Task not found"));
     }
 
-    public void createTask(TaskRequest request) throws Exception {
-        UserEntity userEntity = userRepository.findById(request.getUserId())
+    public void createTask(TaskRequest request, Integer userId) throws Exception {
+        UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new Exception("User not found"));
 
         TaskEntity taskEntity = new TaskEntity();

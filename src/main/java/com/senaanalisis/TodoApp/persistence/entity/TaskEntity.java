@@ -32,15 +32,14 @@ public class TaskEntity {
     @Schema(description = "task description", example = "this task is important")
     private String description;
 
-    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "TIMESTAMP")
     @Schema(description = "Time to start task", example = "2023-11-07T14:30:00")
     private LocalDateTime startTime;
 
-    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "TIMESTAMP")
     @Schema(description = "Time to alert for the task", example = "2023-11-07T16:30:00")
     private LocalDateTime alertTime;
 
-    @Column(columnDefinition = "TINYINT", nullable = false)
     @Schema(description = "Task status", example = "false/true")
     private Boolean state;
 
